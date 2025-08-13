@@ -17,11 +17,10 @@ def proxy(metodo):
     app.logger.debug(f"Requisição proxy para URL: {url} com params: {params}")
     try:
         resp = requests.get(url, params=params, timeout=30)
+        app.logger.debug(f"Status code da API: {resp.status_code}")
+        app.logger.debug(f"Conteúdo da resposta: {resp.text}")
         resp.raise_for_status()
         return jsonify(resp.json()), resp.status_code
-    except requests.exceptions.RequestException as e:
-        app.logger.error(f"Erro na requisição à API: {e}")
-        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
